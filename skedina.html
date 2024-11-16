@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendos Skedine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: relative; /* Make header a positioned container for absolute elements */
+        }
+
+        /* Position the "Shiko ndeshjet e ditës së sotme" link on the top-left */
+        .top-link-container {
+            position: absolute;
+            top: 37px;   /* Aligns it near the top */
+            left: 0px;  /* Aligns it near the left */
+        }
+
+        .top-link {
+            background-color: green; /* Blue background */
+            color: white;
+            padding: 40px 20px;
+            border-radius: 1px;
+            text-decoration: none; /* Removes underline */
+            font-size: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .top-link:hover {
+            background-color: #00b32d; /* Darker blue when hovered */
+        }
+
+        /* Position the "Kredite" box on the top-right */
+        .credits {
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            background: #ffcc00;
+            padding: 40px 20px;
+            border-radius: 1px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Vendos Skedine</h1>
+
+    <div class="top-link-container">
+        <a href="https://www.sofascore.com/" target="_blank" class="top-link">
+            Shiko ndeshjet e ditës së sotme
+        </a>
+    </div>
+</header>
+
+<center><img src="futboll2.jpg" width="500px" height="250px" alt=""></center>
+
+<!-- Credits box positioned on the top-right -->
+<div class="credits">Kredite: <span id="credits">500</span> Lek</div>
+
+<div class="container">
+    <label for="team1">Skuadra 1:</label>
+    <input type="text" id="team1" placeholder="Shkruaj emrin e skuadrës 1...">
+
+    <label for="team2">Skuadra 2:</label>
+    <input type="text" id="team2" placeholder="Shkruaj emrin e skuadrës 2...">
+
+    <label for="bet-type">Si do e vendosni?:</label>
+    <select id="bet-type">
+        <option value="1">1</option>
+        <option value="X">X</option>
+        <option value="2">2</option>
+        <option value="1X">1X</option>
+        <option value="X2">X2</option>
+        <option value="12">12</option>
+        <option value="Gol Gol">Gol-Gol</option>
+        <option value="Pa Gol">Jo Gol-Gol</option>
+        <option value="2+">2+</option>
+        <option value="3+">3+</option>
+        <option value="4+">4+</option>
+        <option value="5+">5+</option>
+    </select>
+
+    <label for="odds">Koeficienti:</label>
+    <input type="number" id="odds" placeholder="Shkruaj koeficientin..." step="0.01">
+
+    <button onclick="addMatch()" style="background-color: orange; color: white; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer;">Vendos Ndeshjen</button>
+</div>
+
+<div class="container">
+    <h2>Skedina</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Ndeshja</th>
+                <th>Tipi</th>
+                <th>Koeficienti përkatës</th>
+            </tr>
+        </thead>
+        <tbody id="bets-table">
+            <!-- Bastet do të shtohen këtu -->
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <label for="total-amount">Shuma e parave:</label>
+    <input type="number" id="total-amount" placeholder="Shkruaj vlerën..." step="0.01">
+
+    <button onclick="finalizeBet()" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer;">Përfundo Skedinën</button>
+    <center><img src="https://assets.goal.com/images/v3/blt393a027749e84d95/EPL_on_Sky.jpg?auto=webp&format=pjpg&width=3840&quality=60" width="500px" height="250px" alt="Premier League"></center><br>
+    <button onclick="downloadTicket()" style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer;">
+        Shkarko Skedinën</button>
+    
+    <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script>
+    let credits = 500;
+    let bets = [];
+    let totalOdds = 1;
+    let totalAmount = 0;
+
+    function addMatch() {
+        const team1 = document.getElementById('team1').value.trim();
+        const team2 = document.getElementById('team2').value.trim();
+        const betType = document.getElementById('bet-type').value;
+        const odds = parseFloat(document.getElementById('odds').value);
+
+        if (!team1 || !team2 || isNaN(odds) || odds <= 0) {
+            alert('Ju lutem plotësoni të gjitha fushat në mënyrë të saktë!');
+            return;
+        }
+
+        const match = `${team1} vs ${team2}`;
+        bets.push({ match, betType, odds });
+        totalOdds *= odds;
+
+        const table = document.getElementById('bets-table');
+        const row = table.insertRow();
+        row.innerHTML = `
+            <td>${match}</td>
+            <td>${betType}</td>
+            <td>${odds}</td>
+        `;
+
+        document.getElementById('team1').value = '';
+        document.getElementById('team2').value = '';
+        document.getElementById('odds').value = '';
+        alert('Ndeshja u shtua me sukses!');
+    }
+
+    function finalizeBet() {
+        totalAmount = parseFloat(document.getElementById('total-amount').value);
+        const resultDiv = document.getElementById('result');
+
+        if (isNaN(totalAmount) || totalAmount <= 0) {
+            resultDiv.style.color = 'red';
+            resultDiv.textContent = 'Ju lutem shkruani një shumë të vlefshme!';
+            return;
+        }
+
+        if (totalAmount > credits) {
+            resultDiv.style.color = 'red';
+            resultDiv.textContent = 'Keni kredite të pamjaftueshme!';
+            return;
+        }
+
+        const potentialWin = (totalAmount * totalOdds).toFixed(2);
+        credits -= totalAmount;
+        document.getElementById('credits').textContent = credits;
+
+        resultDiv.style.color = '#28a745';
+        resultDiv.textContent = `Basti u vendos me sukses! Fito e mundshme totale: ${potentialWin} Lek.`;
+    }
+
+    function downloadTicket() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFontSize(16);
+        doc.text("Skedina Juaj", 10, 10);
+
+        let y = 20;
+        bets.forEach((bet, index) => {
+            doc.text(
+                `${index + 1}. ${bet.match} | Tipi: ${bet.betType} | Koeficienti: ${bet.odds}`,
+                10,
+                y
+            );
+            y += 10;
+        });
+
+        doc.text(`Shuma totale: ${totalAmount} Lek`, 10, y);
+        y += 10;
+        doc.text(
+            `Fitimi i mundshëm: ${(totalAmount * totalOdds).toFixed(2)} Lek`,
+            10,
+            y
+        );
+
+        doc.save("skedina.pdf");
+    }
+</script>
+
+</body>
+</html>
